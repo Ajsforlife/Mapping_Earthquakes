@@ -53,7 +53,7 @@ attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap
 
 // Create a base layer that holds both maps.
 let baseMaps = {
-  "Streets": streets,
+  "Streets":streets,
   "Satellite Streets": satStreets
 };
 // Create the map object with center, zoom level and default layer.
@@ -67,20 +67,24 @@ let map = L.map('mapid', {
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
 
-// Retrieve the earthquake GeoJSON data.
-d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
-  // Creating a GeoJSON layer with the retrieved data.
-  L.geoJSON(data).addTo(map);
-});
+// Accessing the Toronto neighborhoods GeoJSON URL.
+let Earthquake = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+
+// Grabbing our GeoJSON data.
+d3.json(Earthquake).then(function(data) {
+  console.log(data);
+
   // Create a style for the lines.
-// let myStyle = {
-//   color: "#ffffa1",
-//   weight: 2
-// }
-// // Creating a GeoJSON layer with the retrieved data. skill drill 13.5.3
-// L.geoJSON(data, {
-//   style: myStyle,
-//   onEachFeature: function(feature, layer) {
-//          layer.bindPopup("<h3> Airline: "+ layer.feature.properties.airline+"<HR>"+"Destination: "+ layer.feature.properties.dst+ "</h3>");
-// }}).addTo(map);
+let myStyle = {
+  color: "blue",
+  weight: 1,
+  fillColor: "yellow"
+}
+// Creating a GeoJSON layer with the retrieved data. skill drill 13.5.3
+L.geoJSON(data,{
+  style: myStyle,
+  onEachFeature: function(feature, layer) {
+         layer.bindPopup("<h3> Neighborhood: "+ layer.feature.properties.AREA_NAME+"<h3>");
+}}).addTo(map);
+});
 
